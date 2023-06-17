@@ -4,10 +4,10 @@ import shutil
 import tempfile
 import unittest
 
-import add
+import add_command
 import checkout
 import commit
-import init
+import init_command
 
 
 class GitClientTests(unittest.TestCase):
@@ -21,19 +21,19 @@ class GitClientTests(unittest.TestCase):
 
     def test_init(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, ".pygit")))
 
     def test_add(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         staging_dir = os.path.join(self.temp_dir, ".pygit", "staging")
         staged_file = os.path.join(staging_dir, "sample.txt")
@@ -41,14 +41,14 @@ class GitClientTests(unittest.TestCase):
 
     def test_commit(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)
@@ -59,14 +59,14 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_switch_branch(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)
@@ -82,14 +82,14 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_updates_working_directory(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)
@@ -102,7 +102,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content 2\n")
 
         add_args = argparse.Namespace(files=[sample_file2])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)
@@ -115,14 +115,14 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_after_commits_should_reload_recent_version(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init.run_init(init_args)
+        init_command.run(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)
@@ -134,7 +134,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content 2\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add.run_add(add_args)
+        add_command.run(add_args)
 
         commit_args = argparse.Namespace()
         commit.run_commit(commit_args)

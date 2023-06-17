@@ -3,7 +3,7 @@ import os
 from utils import REPO_DIR
 
 
-def run_init(args):
+def run(args):
     repo_path = os.path.abspath(args.path)
     pygit_dir = os.path.join(repo_path, REPO_DIR)
 

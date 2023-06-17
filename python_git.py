@@ -1,10 +1,10 @@
 import argparse
 import sys
 
-import add
+import add_command
 import checkout
 import commit
-import init
+import init_command
 import log
 
 arg_parser = argparse.ArgumentParser()
@@ -37,9 +37,9 @@ def main(argv=None):
     args = arg_parser.parse_args(argv)
 
     if args.command == "init":
-        init.run_init(args)
+        init_command.run(args)
     elif args.command == "add":
-        add.run_add(args)
+        add_command.run(args)
     elif args.command == "commit":
         commit.run_commit(args)
     elif args.command == "log":

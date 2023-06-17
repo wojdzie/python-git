@@ -4,7 +4,7 @@ import shutil
 from utils import find_repo_path
 
 
-def run_add(args):
+def run(args):
     repo_path = find_repo_path()
     staging_dir = os.path.join(repo_path, "staging")
 
