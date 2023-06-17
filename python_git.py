@@ -1,5 +1,8 @@
+import argparse
 import os
 import shutil
+import datetime
+import sys
 
 REPO_DIR = ".pygit"
 
@@ -48,3 +51,68 @@ def find_repo_path():
             return repo_dir
         current_dir = os.path.dirname(current_dir)
     return None
+
+
+def commit(args):
+    repo_path = find_repo_path()
+    if repo_path is None:
+        print("Not a git repository.")
+        return
+
+    staging_dir = os.path.join(repo_path, "staging")
+    commit_dir = os.path.join(repo_path, "commits")
+    current_branch_file = os.path.join(repo_path, "HEAD")
+
+    current_branch = read_file(current_branch_file)
+    if current_branch is None:
+        print("No branch is currently checked out.")
+        return
+
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    commit_id = f"{current_branch}_{timestamp}"
+    commit_dir = os.path.join(commit_dir, commit_id)
+
+    os.makedirs(commit_dir)
+    shutil.copytree(staging_dir, os.path.join(commit_dir, "staging"))
+
+    print(f"Committed changes to branch '{current_branch}' with commit ID: {commit_id}.")
+
+
+def read_file(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
+            return f.read()
+    return None
+
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+
+    arg_parser = argparse.ArgumentParser()
+    arg_subparsers = arg_parser.add_subparsers(title="Commands", dest="command")
+    arg_subparsers.required = True
+
+    # Init command
+    arg_sp_init = arg_subparsers.add_parser("init", help="Initialize a new, empty repository.")
+    arg_sp_init.add_argument("path", metavar="directory", nargs="?", default=".", help="Where to create the repository")
+
+    # Add command
+    arg_sp_add = arg_subparsers.add_parser("add", help="Add file(s) to the staging area.")
+    arg_sp_add.add_argument("files", metavar="file", nargs="+", help="File(s) to add")
+
+    # Commit command
+    arg_sp_commit = arg_subparsers.add_parser("commit", help="Create a commit from staged changes.")
+
+    args = arg_parser.parse_args(argv)
+
+    if args.command == "init":
+        init(args)
+    elif args.command == "add":
+        add(args)
+    elif args.command == "commit":
+        commit(args)
+
+
+if __name__ == "__main__":
+    main()
