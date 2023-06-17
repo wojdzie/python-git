@@ -1,19 +1,23 @@
 import argparse
+import io
 import os
 import shutil
+import sys
 import tempfile
 import unittest
-from contextlib import redirect_stdout
-from io import StringIO
 
-from python_git import init, add, commit
+from python_git import init, add, commit, log, checkout
 
 
-def _get_captured_output(func):
-    buffer = StringIO()
-    with redirect_stdout(buffer):
+def _get_captured_output(func, args=None):
+    captured_output = io.StringIO()
+    sys.stdout = captured_output
+    if args is None:
         func()
-    return buffer.getvalue().strip()
+    else:
+        func(args)
+    sys.stdout = sys.__stdout__
+    return captured_output.getvalue().strip()
 
 
 class GitClientTests(unittest.TestCase):
@@ -62,6 +66,29 @@ class GitClientTests(unittest.TestCase):
         commit_dir = os.path.join(self.temp_dir, ".pygit", "commits")
         commit_ids = os.listdir(commit_dir)
         self.assertEqual(len(commit_ids), 1)
+
+    def test_checkout_switch_branch(self):
+        init_args = argparse.Namespace(path=self.temp_dir)
+        init(init_args)
+
+        sample_file = os.path.join(self.temp_dir, "sample.txt")
+        with open(sample_file, "w") as f:
+            f.write("Sample content")
+
+        add_args = argparse.Namespace(files=[sample_file])
+        add(add_args)
+
+        commit_args = argparse.Namespace()
+        commit(commit_args)
+
+        checkout_args = argparse.Namespace(branch="branch1")
+        checkout(checkout_args)
+
+        current_branch_file = os.path.join(self.temp_dir, ".pygit", "HEAD")
+        with open(current_branch_file, "r") as f:
+            current_branch = f.read().strip()
+
+        self.assertEqual(current_branch, "branch1")
 
 
 if __name__ == "__main__":
