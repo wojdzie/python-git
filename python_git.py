@@ -92,6 +92,21 @@ def read_file(file_path):
     return None
 
 
+def log(args):
+    repo_path = find_repo_path()
+    if repo_path is None:
+        print("Not a git repository.")
+        return
+
+    commit_dir = os.path.join(repo_path, "commits")
+
+    print("Commit history:")
+    for commit_id in os.listdir(commit_dir):
+        branch = commit_id.split("_")[0]
+        timestamp = commit_id.split("_")[1]
+        print(f"- Branch: {branch}, Timestamp: {timestamp}, Commit ID: {commit_id}")
+
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
@@ -111,6 +126,9 @@ def main(argv=None):
     # Commit command
     arg_sp_commit = arg_subparsers.add_parser("commit", help="Create a commit from staged changes")
 
+    # Log command
+    arg_sp_log = arg_subparsers.add_parser("log", help="Display commit history for the repository.")
+
     args = arg_parser.parse_args(argv)
 
     if args.command == "init":
@@ -119,7 +137,10 @@ def main(argv=None):
         add(args)
     elif args.command == "commit":
         commit(args)
+    elif args.command == "log":
+        log(args)
 
 
 if __name__ == "__main__":
     main()
+
