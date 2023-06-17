@@ -136,22 +136,29 @@ def update_working_directory(repo_path, branch):
     for root, dirs, files in os.walk(parent_dir):
         if root == parent_dir:
             dirs[:] = [d for d in dirs if d != ".pygit"]
-
         for file in files:
             os.remove(os.path.join(root, file))
-
-    if os.path.exists(branch_dir):
-        for root, dirs, files in os.walk(branch_dir):
-            for file in files:
-                source_path = os.path.join(root, file)
-                target_path = os.path.join(parent_dir, file)
-                shutil.copy(source_path, target_path)
 
     if os.path.exists(staging_dir):
         for root, dirs, files in os.walk(staging_dir):
             for file in files:
                 source_path = os.path.join(root, file)
                 target_path = os.path.join(parent_dir, file)
+                shutil.copy(source_path, target_path)
+
+    if os.path.exists(branch_dir):
+        files_to_copy = {}
+
+        for root, dirs, files in os.walk(branch_dir):
+            for file in files:
+                source_path = os.path.join(root, file)
+                timestamp = int(root.split("_")[-1])
+                if file not in files_to_copy or timestamp > files_to_copy[file][0]:
+                    files_to_copy[file] = (timestamp, source_path)
+
+        for file, (timestamp, source_path) in files_to_copy.items():
+            target_path = os.path.join(parent_dir, file)
+            if not os.path.exists(target_path):
                 shutil.copy(source_path, target_path)
 
 
