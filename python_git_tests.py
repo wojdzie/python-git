@@ -6,7 +6,7 @@ import unittest
 
 import add_command
 import checkout
-import commit
+import commit_command
 import init_command
 
 
@@ -51,7 +51,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         commit_dir = os.path.join(self.temp_dir, ".pygit", "commits")
         commit_ids = os.listdir(commit_dir)
@@ -69,7 +69,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout.run_checkout(checkout_args)
@@ -92,7 +92,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout.run_checkout(checkout_args)
@@ -105,7 +105,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
         checkout.run_checkout(checkout_args)
@@ -125,7 +125,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout.run_checkout(checkout_args)
@@ -137,7 +137,7 @@ class GitClientTests(unittest.TestCase):
         add_command.run(add_args)
 
         commit_args = argparse.Namespace()
-        commit.run_commit(commit_args)
+        commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
         checkout.run_checkout(checkout_args)

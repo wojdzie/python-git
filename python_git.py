@@ -3,7 +3,7 @@ import sys
 
 import add_command
 import checkout
-import commit
+import commit_command
 import init_command
 import log
 
@@ -41,7 +41,7 @@ def main(argv=None):
     elif args.command == "add":
         add_command.run(args)
     elif args.command == "commit":
-        commit.run_commit(args)
+        commit_command.run(args)
     elif args.command == "log":
         log.run_log(args)
     elif args.command == "checkout":

@@ -5,7 +5,7 @@ import shutil
 from utils import find_repo_path, read_file
 
 
-def run_commit(args):
+def run(args):
     repo_path = find_repo_path()
 
     staging_dir = os.path.join(repo_path, "staging")
