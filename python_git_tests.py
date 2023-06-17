@@ -6,7 +6,8 @@ import sys
 import tempfile
 import unittest
 
-from python_git import init, add, commit, checkout
+import init
+from python_git import add, commit, checkout
 
 
 def _get_captured_output(func, args=None):
@@ -31,12 +32,12 @@ class GitClientTests(unittest.TestCase):
 
     def test_init(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, ".pygit")))
 
     def test_add(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
@@ -51,7 +52,7 @@ class GitClientTests(unittest.TestCase):
 
     def test_commit(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
@@ -69,7 +70,7 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_switch_branch(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
@@ -92,7 +93,7 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_updates_working_directory(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
@@ -125,7 +126,7 @@ class GitClientTests(unittest.TestCase):
 
     def test_checkout_after_commits_should_reload_recent_version(self):
         init_args = argparse.Namespace(path=self.temp_dir)
-        init(init_args)
+        init.run_init(init_args)
 
         sample_file = os.path.join(self.temp_dir, "sample.txt")
         with open(sample_file, "w") as f:
