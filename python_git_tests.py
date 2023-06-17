@@ -30,6 +30,21 @@ class GitClientTests(unittest.TestCase):
         init(init_args)
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, ".pygit")))
 
+    def test_add(self):
+        init_args = argparse.Namespace(path=self.temp_dir)
+        init(init_args)
+
+        sample_file = os.path.join(self.temp_dir, "sample.txt")
+        with open(sample_file, "w") as f:
+            f.write("Sample content")
+
+        add_args = argparse.Namespace(files=[sample_file])
+        add(add_args)
+
+        staging_dir = os.path.join(self.temp_dir, ".pygit", "staging")
+        staged_file = os.path.join(staging_dir, "sample.txt")
+        self.assertTrue(os.path.exists(staged_file))
+
 
 if __name__ == "__main__":
     unittest.main()
