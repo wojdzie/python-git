@@ -2,7 +2,7 @@ import argparse
 import sys
 
 import add_command
-import checkout
+import checkout_command
 import commit_command
 import init_command
 import log
@@ -45,7 +45,7 @@ def main(argv=None):
     elif args.command == "log":
         log.run_log(args)
     elif args.command == "checkout":
-        checkout.run_checkout(args)
+        checkout_command.run(args)
 
 
 if __name__ == "__main__":

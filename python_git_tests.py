@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 import add_command
-import checkout
+import checkout_command
 import commit_command
 import init_command
 
@@ -72,7 +72,7 @@ class GitClientTests(unittest.TestCase):
         commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         current_branch_file = os.path.join(self.temp_dir, ".pygit", "HEAD")
         with open(current_branch_file, "r") as f:
@@ -95,7 +95,7 @@ class GitClientTests(unittest.TestCase):
         commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         sample_file2 = os.path.join(self.temp_dir, "sample2.txt")
         with open(sample_file2, "w") as f:
@@ -108,7 +108,7 @@ class GitClientTests(unittest.TestCase):
         commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         self.assertTrue(os.path.exists(os.path.join(self.temp_dir, "sample.txt")))
         self.assertFalse(os.path.exists(os.path.join(self.temp_dir, "sample2.txt")))
@@ -128,7 +128,7 @@ class GitClientTests(unittest.TestCase):
         commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         with open(sample_file, "a") as f:
             f.write("Sample content 2\n")
@@ -140,14 +140,14 @@ class GitClientTests(unittest.TestCase):
         commit_command.run(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         with open(sample_file, "r") as f:
             content = f.read()
             assert content.strip() == "Sample content"
 
         checkout_args = argparse.Namespace(branch="develop")
-        checkout.run_checkout(checkout_args)
+        checkout_command.run(checkout_args)
 
         with open(sample_file, "r") as f:
             lines = f.readlines()
