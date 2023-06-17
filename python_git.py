@@ -70,7 +70,7 @@ def commit(args):
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     commit_id = f"{current_branch}_{timestamp}"
-    commit_dir = os.path.join(commit_dir, commit_id)
+    commit_dir = os.path.join(commit_dir, current_branch, commit_id)
     os.makedirs(commit_dir)
 
     for file_name in os.listdir(staging_dir):
@@ -103,8 +103,27 @@ def log(args):
     print("Commit history:")
     for commit_id in os.listdir(commit_dir):
         branch = commit_id.split("_")[0]
-        timestamp = commit_id.split("_")[1]
-        print(f"- Branch: {branch}, Timestamp: {timestamp}, Commit ID: {commit_id}")
+        timestamp = datetime.datetime.strptime(commit_id.split("_")[1], "%Y%m%d%H%M%S").strftime("%H:%M:%S %d-%m-%Y")
+        print(f"- Timestamp: {timestamp}, Branch: {branch}, Commit ID: {commit_id}")
+
+
+def checkout(args):
+    repo_path = find_repo_path()
+    branch_dir = os.path.join(repo_path, "commits", args.branch)
+    if not os.path.exists(branch_dir):
+        current_branch_file = os.path.join(repo_path, "HEAD")
+        current_branch = read_file(current_branch_file)
+
+        os.makedirs(branch_dir)
+        commit_dir = os.path.join(repo_path, "commits")
+        current_commit = os.path.join(commit_dir, current_branch)
+        shutil.copytree(current_commit, branch_dir, dirs_exist_ok=True)
+
+    current_branch_file = os.path.join(repo_path, "HEAD")
+    with open(current_branch_file, "w") as f:
+        f.write(args.branch)
+
+    print(f"Switched to branch '{args.branch}'.")
 
 
 def main(argv=None):
@@ -129,6 +148,10 @@ def main(argv=None):
     # Log command
     arg_sp_log = arg_subparsers.add_parser("log", help="Display commit history for the repository.")
 
+    # Checkout command
+    arg_sp_checkout = arg_subparsers.add_parser("checkout", help="Switch branches.")
+    arg_sp_checkout.add_argument("branch", metavar="branch", help="Branch to switch to")
+
     args = arg_parser.parse_args(argv)
 
     if args.command == "init":
@@ -139,8 +162,9 @@ def main(argv=None):
         commit(args)
     elif args.command == "log":
         log(args)
+    elif args.command == "checkout":
+        checkout(args)
 
 
 if __name__ == "__main__":
     main()
-
