@@ -4,7 +4,7 @@ import os
 from utils import find_repo_path
 
 
-def run_log(args):
+def run(args):
     repo_path = find_repo_path()
     if repo_path is None:
         print("Not a git repository.")

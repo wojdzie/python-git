@@ -5,7 +5,7 @@ import add_command
 import checkout_command
 import commit_command
 import init_command
-import log
+import log_command
 
 arg_parser = argparse.ArgumentParser()
 arg_subparsers = arg_parser.add_subparsers(title="Commands", dest="command")
@@ -43,7 +43,7 @@ def main(argv=None):
     elif args.command == "commit":
         commit_command.run(args)
     elif args.command == "log":
-        log.run_log(args)
+        log_command.run(args)
     elif args.command == "checkout":
         checkout_command.run(args)
 
