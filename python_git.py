@@ -16,7 +16,6 @@ def init(args):
         return
 
     os.makedirs(pygit_dir, exist_ok=True)
-    print(f"Initialized empty repository in {pygit_dir}")
 
     staging_dir = os.path.join(pygit_dir, "staging")
     os.makedirs(staging_dir, exist_ok=True)
@@ -55,9 +54,6 @@ def find_repo_path():
 
 def commit(args):
     repo_path = find_repo_path()
-    if repo_path is None:
-        print("Not a git repository.")
-        return
 
     staging_dir = os.path.join(repo_path, "staging")
     commit_dir = os.path.join(repo_path, "commits")
@@ -68,12 +64,23 @@ def commit(args):
         print("No branch is currently checked out.")
         return
 
+    if len(os.listdir(staging_dir)) == 0:
+        print("No changes added to commit.")
+        return
+
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     commit_id = f"{current_branch}_{timestamp}"
     commit_dir = os.path.join(commit_dir, commit_id)
-
     os.makedirs(commit_dir)
-    shutil.copytree(staging_dir, os.path.join(commit_dir, "staging"))
+
+    for file_name in os.listdir(staging_dir):
+        file_path = os.path.join(staging_dir, file_name)
+        target_path = os.path.join(commit_dir, file_name)
+        shutil.copy(file_path, target_path)
+        os.remove(file_path)
+
+    shutil.rmtree(staging_dir)
+    os.makedirs(staging_dir)
 
     print(f"Committed changes to branch '{current_branch}' with commit ID: {commit_id}.")
 
@@ -102,7 +109,7 @@ def main(argv=None):
     arg_sp_add.add_argument("files", metavar="file", nargs="+", help="File(s) to add")
 
     # Commit command
-    arg_sp_commit = arg_subparsers.add_parser("commit", help="Create a commit from staged changes.")
+    arg_sp_commit = arg_subparsers.add_parser("commit", help="Create a commit from staged changes")
 
     args = arg_parser.parse_args(argv)
 
