@@ -1,11 +1,7 @@
 import argparse
 import sys
 
-import add_command
-import checkout_command
-import commit_command
-import init_command
-import log_command
+from commands import commit_command, log_command, add_command, checkout_command, init_command
 
 arg_parser = argparse.ArgumentParser()
 arg_subparsers = arg_parser.add_subparsers(title="Commands", dest="command")

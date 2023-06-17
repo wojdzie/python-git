@@ -4,10 +4,7 @@ import shutil
 import tempfile
 import unittest
 
-import add_command
-import checkout_command
-import commit_command
-import init_command
+from commands import commit_command, add_command, checkout_command, init_command
 
 
 class GitClientTests(unittest.TestCase):
