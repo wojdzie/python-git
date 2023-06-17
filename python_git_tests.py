@@ -6,7 +6,7 @@ import sys
 import tempfile
 import unittest
 
-from python_git import init, add, commit, log, checkout
+from python_git import init, add, commit, checkout
 
 
 def _get_captured_output(func, args=None):
@@ -89,6 +89,40 @@ class GitClientTests(unittest.TestCase):
             current_branch = f.read().strip()
 
         self.assertEqual(current_branch, "branch1")
+
+    def test_checkout_updates_working_directory(self):
+        init_args = argparse.Namespace(path=self.temp_dir)
+        init(init_args)
+
+        sample_file = os.path.join(self.temp_dir, "sample.txt")
+        with open(sample_file, "w") as f:
+            f.write("Sample content")
+
+        add_args = argparse.Namespace(files=[sample_file])
+        add(add_args)
+
+        commit_args = argparse.Namespace()
+        commit(commit_args)
+
+        checkout_args = argparse.Namespace(branch="branch1")
+        checkout(checkout_args)
+
+        sample_file2 = os.path.join(self.temp_dir, "sample2.txt")
+        with open(sample_file2, "w") as f:
+            f.write("Sample content 2")
+
+        add_args = argparse.Namespace(files=[sample_file2])
+        add(add_args)
+
+        commit_args = argparse.Namespace()
+        commit(commit_args)
+
+        checkout_args = argparse.Namespace(branch="master")
+        checkout(checkout_args)
+
+        # Check if the file exists in the working directory
+        self.assertTrue(os.path.exists(os.path.join(self.temp_dir, "sample.txt")))
+        self.assertFalse(os.path.exists(os.path.join(self.temp_dir, "sample2.txt")))
 
 
 if __name__ == "__main__":
