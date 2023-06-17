@@ -44,7 +44,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         staging_dir = os.path.join(self.temp_dir, ".pygit", "staging")
         staged_file = os.path.join(staging_dir, "sample.txt")
@@ -59,7 +59,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)
@@ -77,7 +77,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)
@@ -100,7 +100,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)
@@ -113,7 +113,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content 2\n")
 
         add_args = argparse.Namespace(files=[sample_file2])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)
@@ -133,7 +133,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)
@@ -145,7 +145,7 @@ class GitClientTests(unittest.TestCase):
             f.write("Sample content 2\n")
 
         add_args = argparse.Namespace(files=[sample_file])
-        add(add_args)
+        add.run_add(add_args)
 
         commit_args = argparse.Namespace()
         commit(commit_args)

@@ -4,31 +4,9 @@ import shutil
 import datetime
 import sys
 
+import add
 import init
-
-REPO_DIR = ".pygit"
-
-
-def add(args):
-    repo_path = find_repo_path()
-    staging_dir = os.path.join(repo_path, "staging")
-
-    for file_path in args.files:
-        if os.path.exists(file_path):
-            shutil.copy(file_path, staging_dir)
-            print(f"Added '{file_path}' to the staging area.")
-        else:
-            print(f"Skipping '{file_path}' - File does not exist.")
-
-
-def find_repo_path():
-    current_dir = os.getcwd()
-    while current_dir != "/":
-        repo_dir = os.path.join(current_dir, REPO_DIR)
-        if os.path.exists(repo_dir):
-            return repo_dir
-        current_dir = os.path.dirname(current_dir)
-    return None
+from utils import find_repo_path
 
 
 def commit(args):
@@ -173,7 +151,7 @@ def main(argv=None):
     if args.command == "init":
         init.run_init(args)
     elif args.command == "add":
-        add(args)
+        add.run_add(args)
     elif args.command == "commit":
         commit(args)
     elif args.command == "log":

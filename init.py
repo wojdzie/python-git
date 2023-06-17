@@ -1,6 +1,6 @@
 import os
 
-from python_git import REPO_DIR
+from utils import REPO_DIR
 
 
 def run_init(args):
