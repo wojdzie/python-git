@@ -68,7 +68,7 @@ def commit(args):
         print("No changes added to commit.")
         return
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
     commit_id = f"{current_branch}_{timestamp}"
     commit_dir = os.path.join(commit_dir, current_branch, commit_id)
     os.makedirs(commit_dir)
@@ -103,7 +103,8 @@ def log(args):
     print("Commit history:")
     for commit_id in os.listdir(commit_dir):
         branch = commit_id.split("_")[0]
-        timestamp = datetime.datetime.strptime(commit_id.split("_")[1], "%Y%m%d%H%M%S").strftime("%H:%M:%S %d-%m-%Y")
+        raw_time = datetime.datetime.strptime(commit_id.split("_")[1], "%Y%m%d%H%M%S%f")
+        timestamp = raw_time.strftime("%H:%M:%S.%f %d-%m-%Y")
         print(f"- Timestamp: {timestamp}, Branch: {branch}, Commit ID: {commit_id}")
 
 

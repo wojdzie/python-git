@@ -81,14 +81,14 @@ class GitClientTests(unittest.TestCase):
         commit_args = argparse.Namespace()
         commit(commit_args)
 
-        checkout_args = argparse.Namespace(branch="test_branch_1")
+        checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
 
         current_branch_file = os.path.join(self.temp_dir, ".pygit", "HEAD")
         with open(current_branch_file, "r") as f:
             current_branch = f.read().strip()
 
-        self.assertEqual(current_branch, "test_branch_1")
+        self.assertEqual(current_branch, "develop")
 
     def test_checkout_updates_working_directory(self):
         init_args = argparse.Namespace(path=self.temp_dir)
@@ -104,7 +104,7 @@ class GitClientTests(unittest.TestCase):
         commit_args = argparse.Namespace()
         commit(commit_args)
 
-        checkout_args = argparse.Namespace(branch="test_branch_2")
+        checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
 
         sample_file2 = os.path.join(self.temp_dir, "sample2.txt")
@@ -137,7 +137,7 @@ class GitClientTests(unittest.TestCase):
         commit_args = argparse.Namespace()
         commit(commit_args)
 
-        checkout_args = argparse.Namespace(branch="test_branch_3")
+        checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
 
         with open(sample_file, "a") as f:
@@ -156,7 +156,7 @@ class GitClientTests(unittest.TestCase):
             content = f.read()
             assert content.strip() == "Sample content"
 
-        checkout_args = argparse.Namespace(branch="test_branch_3")
+        checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
 
         with open(sample_file, "r") as f:
