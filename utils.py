@@ -1,6 +1,5 @@
 import os
 
-
 REPO_DIR = ".pygit"
 
 
@@ -11,4 +10,11 @@ def find_repo_path():
         if os.path.exists(repo_dir):
             return repo_dir
         current_dir = os.path.dirname(current_dir)
+    return None
+
+
+def read_file(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
+            return f.read()
     return None

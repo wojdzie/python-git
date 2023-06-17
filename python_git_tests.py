@@ -62,7 +62,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         commit_dir = os.path.join(self.temp_dir, ".pygit", "commits")
         commit_ids = os.listdir(commit_dir)
@@ -80,7 +80,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
@@ -103,7 +103,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
@@ -116,7 +116,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
         checkout(checkout_args)
@@ -136,7 +136,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         checkout_args = argparse.Namespace(branch="develop")
         checkout(checkout_args)
@@ -148,7 +148,7 @@ class GitClientTests(unittest.TestCase):
         add.run_add(add_args)
 
         commit_args = argparse.Namespace()
-        commit(commit_args)
+        commit.run_commit(commit_args)
 
         checkout_args = argparse.Namespace(branch="master")
         checkout(checkout_args)
