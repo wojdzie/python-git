@@ -6,7 +6,7 @@ import unittest
 from contextlib import redirect_stdout
 from io import StringIO
 
-from python_git import init, add
+from python_git import init, add, commit
 
 
 def _get_captured_output(func):
@@ -44,6 +44,24 @@ class GitClientTests(unittest.TestCase):
         staging_dir = os.path.join(self.temp_dir, ".pygit", "staging")
         staged_file = os.path.join(staging_dir, "sample.txt")
         self.assertTrue(os.path.exists(staged_file))
+
+    def test_commit(self):
+        init_args = argparse.Namespace(path=self.temp_dir)
+        init(init_args)
+
+        sample_file = os.path.join(self.temp_dir, "sample.txt")
+        with open(sample_file, "w") as f:
+            f.write("Sample content")
+
+        add_args = argparse.Namespace(files=[sample_file])
+        add(add_args)
+
+        commit_args = argparse.Namespace()
+        commit(commit_args)
+
+        commit_dir = os.path.join(self.temp_dir, ".pygit", "commits")
+        commit_ids = os.listdir(commit_dir)
+        self.assertEqual(len(commit_ids), 1)
 
 
 if __name__ == "__main__":
