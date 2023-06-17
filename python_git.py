@@ -1,29 +1,13 @@
 import argparse
 import os
 import shutil
-import datetime
 import sys
 
 import add
 import commit
 import init
+import log
 from utils import find_repo_path, read_file
-
-
-def log(args):
-    repo_path = find_repo_path()
-    if repo_path is None:
-        print("Not a git repository.")
-        return
-
-    commit_dir = os.path.join(repo_path, "commits")
-
-    print("Commit history:")
-    for commit_id in os.listdir(commit_dir):
-        branch = commit_id.split("_")[0]
-        raw_time = datetime.datetime.strptime(commit_id.split("_")[1], "%Y%m%d%H%M%S%f")
-        timestamp = raw_time.strftime("%H:%M:%S.%f %d-%m-%Y")
-        print(f"- Timestamp: {timestamp}, Branch: {branch}, Commit ID: {commit_id}")
 
 
 def checkout(args):
@@ -116,7 +100,7 @@ def main(argv=None):
     elif args.command == "commit":
         commit.run_commit(args)
     elif args.command == "log":
-        log(args)
+        log.run_log(args)
     elif args.command == "checkout":
         checkout(args)
 
